@@ -11,7 +11,7 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('eslint', function() {
-    return gulp.src(['app/js/*.js'])
+    return gulp.src(['app/script/*.js'])
         .pipe(eslint({ useEslintrc: true }))
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
