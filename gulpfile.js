@@ -3,18 +3,18 @@ var gulp = require('gulp'),
     eslint = require('gulp-eslint');
 
 gulp.task('webserver', function() {
-    gulp.src('app')
-        .pipe(webserver({
-            livereload: true,
-            open: true
-        }));
+  gulp.src('app')
+    .pipe(webserver({
+      livereload: true,
+      open: true
+    }));
 });
 
 gulp.task('eslint', function() {
-    return gulp.src(['app/script/*.js'])
-        .pipe(eslint({ useEslintrc: true }))
-        .pipe(eslint.format())
-        .pipe(eslint.failOnError());
+  return gulp.src(['app/script/*.js'])
+    .pipe(eslint({ useEslintrc: true }))
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
 });
 
 gulp.task('default', ['webserver']);
