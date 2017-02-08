@@ -10,10 +10,10 @@
   canvas.height = CANVAS_HEIGHT;
 
   let context = canvas.getContext('2d');
-    (function() {
-      context.fillStyle = 'rgba(0, 0, 0, 255)';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      setTimeout(arguments.callee, 1000 / 60);
+  (function() {
+    context.fillStyle = 'rgba(0, 0, 0, 255)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    setTimeout(arguments.callee, 1000 / 60);
   })();
 
   let deck = new placecards.Deck();
