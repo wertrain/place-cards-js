@@ -13,10 +13,16 @@
   (function() {
     context.fillStyle = 'rgba(0, 0, 0, 255)';
     context.fillRect(0, 0, canvas.width, canvas.height);
-    setTimeout(arguments.callee, 1000 / 60);
+    //setTimeout(arguments.callee, 1000 / 60);
   })();
 
   let deck = new placecards.Deck();
   deck.shuffle();
-  console.log(deck.popCard().suit);
+  
+  let cardToImageName = function(card) {
+    let suitChar = ['', 's', 'd', 'h', 'c'];
+    return suitChar[card.suit] + (('00' + (card.num + 1)).substr(-2)) + '.png';
+  };
+  let card = deck.popCard();
+  console.log(cardToImageName(card));
 }
