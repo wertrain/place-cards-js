@@ -2,7 +2,7 @@
 
 {
   let CANVAS_WIDTH = 640;
-  let CANVAS_HEIGHT = 480;
+  let CANVAS_HEIGHT = 640;
   let CANVAS_ID = 'canvas';
   
   let canvas = document.getElementById(CANVAS_ID);
