@@ -1,0 +1,19 @@
+{
+    "extends": ["eslint:recommended"],
+    "plugins": [],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {}
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "globals": {
+        "placecards": true
+    },
+    "rules": {
+        "no-console": 0
+    }
+}
