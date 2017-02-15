@@ -32,7 +32,7 @@
   (function() {
     context.fillStyle = 'rgba(0, 0, 0, 255)';
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(cardImages[0], 0, 0, 100, 150);
+    context.drawImage(cardImages[cardToImageIndex(deck.popCard())], 0, 0, 100, 150);
     //setTimeout(arguments.callee, 1000 / 60);
   })();
 }
