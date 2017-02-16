@@ -27,12 +27,35 @@
   let cardToImageIndex = function(card) {
     return (card.suit - 1) * placecards.Deck.NUMBER_MAX + card.num;
   }
-  
+
+  let cardCount = 0;
+  let frameCount = 0;
+  let placedCard = [];
+
   let context = canvas.getContext('2d');
   (function() {
     context.fillStyle = 'rgba(0, 0, 0, 255)';
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(cardImages[cardToImageIndex(deck.popCard())], 0, 0, 100, 150);
+
+    for (let y = 0; y < 4; ++y) {
+      for (let x = 0; x < 13; ++x) {
+        let count = (y * 13 + x);
+        if (cardCount > count) {
+          context.drawImage(
+            cardImages[cardToImageIndex(placedCard[count])], 
+            0, 0, 100, 150);
+        } else {
+          break;
+        }
+      }
+    }
+    if (++frameCount > 60) {
+      let nextCard = deck.popCard();
+      if (typeof nextCard !== "undefined") {
+        placedCard.push(nextCard);
+        ++cardCount;
+      }
+    }
     //setTimeout(arguments.callee, 1000 / 60);
   })();
 }
