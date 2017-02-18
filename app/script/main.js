@@ -37,6 +37,25 @@
   let frameCount = 0;
   let placedCard = [];
 
+  let checkOrder = function(cards, startIndex) {
+    for (let i = startIndex; i < cards.length; ++i) {
+      if ((i % X_LINE) !== 1 && 
+          (i + 1 < cards.length - 1) && 
+          cards[i + 1].num === cards[i].num) {
+        return [i, i + 1];
+      } else if (i > X_LINE && cards[i - X_LINE].num === cards[i].num) {
+        return [i, i - X_LINE];
+      } else if (i <= (X_LINE * Y_LINE) - X_LINE && (i + X_LINE <= cards.length) && cards[i + X_LINE].num === cards[i].num) {
+        return [i, i + X_LINE];
+      }
+    }
+    return null;
+  };
+
+  let SEQ_IDLE = 0;
+  let SEQ_CHECK_CARD = 1;
+  let sequence = 0;
+
   let context = canvas.getContext('2d');
   setInterval(function() {
     context.fillStyle = 'rgba(0, 0, 0, 255)';
@@ -57,10 +76,15 @@
     }
     if (++frameCount > 60) {
       let nextCard = deck.popCard();
-      if (typeof nextCard !== "undefined") {
+      if (typeof nextCard !== 'undefined') {
         placedCard.push(nextCard);
         ++cardCount;
         frameCount = 0;
+        if (null !== checkOrder(placedCard, placedCard.length - 1)) {
+          frameCount = -12000;
+        }
+      } else {
+        frameCount = -12000;
       }
     }
   }, 1000 / 60);
