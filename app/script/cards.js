@@ -5,6 +5,11 @@
     this.suit = suit;
     this.num = num;
   };
+  Card.prototype = {
+    equal: function(card) {
+      return (this.suit === card.suit && this.num === card.num);
+    }
+  };
   Card.SUIT_NONE  = 0;
   Card.SUIT_SPADE = 1;
   Card.SUIT_DIA   = 2;

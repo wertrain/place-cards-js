@@ -39,22 +39,35 @@
 
   let checkOrder = function(cards, startIndex) {
     for (let i = startIndex; i < cards.length; ++i) {
-      if ((i % X_LINE) !== 1 && 
-          (i + 1 < cards.length - 1) && 
-          cards[i + 1].num === cards[i].num) {
-        return [i, i + 1];
-      } else if (i > X_LINE && cards[i - X_LINE].num === cards[i].num) {
-        return [i, i - X_LINE];
-      } else if (i <= (X_LINE * Y_LINE) - X_LINE && (i + X_LINE <= cards.length) && cards[i + X_LINE].num === cards[i].num) {
-        return [i, i + X_LINE];
+      if ((i % X_LINE) !== 0 && typeof(cards[i - 1]) !== 'undefined' && 
+          cards[i - 1].num === cards[i].num) {
+        return [cards[i - 1], cards[i]];
+      } else if ((i % X_LINE) !== 1 && typeof(cards[i + 1]) !== 'undefined' && 
+                  cards[i + 1].num === cards[i].num) {
+        return [cards[i], cards[i + 1]];
+      } else if (typeof(cards[i - X_LINE]) !== 'undefined' && cards[i - X_LINE].num === cards[i].num) {
+        return [cards[i - X_LINE], cards[i]];
+      } else if (i <= (X_LINE * Y_LINE) - X_LINE && typeof(cards[i + X_LINE]) !== 'undefined' && cards[i + X_LINE].num === cards[i].num) {
+        return [cards[i], cards[i + X_LINE]];
       }
     }
     return null;
   };
+  let deleteCard = function(cards, target) {
+      for (let i = 0; i < cards.length; ++i) {
+        if (cards[i].equal(target)) {
+          cards.splice(i, 1);
+          return true;
+        }
+      }
+      return false;
+  };
 
-  let SEQ_IDLE = 0;
+  let SEQ_PLACE_CARD = 0;
   let SEQ_CHECK_CARD = 1;
-  let sequence = 0;
+  let SEQ_CHECK_ALL_CARD = 2;
+  let sequence = SEQ_PLACE_CARD;
+  let check = false;
 
   let context = canvas.getContext('2d');
   setInterval(function() {
@@ -75,17 +88,40 @@
       }
     }
     if (++frameCount > 60) {
-      let nextCard = deck.popCard();
-      if (typeof nextCard !== 'undefined') {
-        placedCard.push(nextCard);
-        ++cardCount;
-        frameCount = 0;
-        if (null !== checkOrder(placedCard, placedCard.length - 1)) {
-          frameCount = -12000;
-        }
-      } else {
-        frameCount = -12000;
+      let cards = null;
+      switch(sequence) {
+        case SEQ_CHECK_CARD:
+          cards = checkOrder(placedCard, placedCard.length - 1);
+          if (null !== cards) {
+            deleteCard(placedCard, cards[0]);
+            deleteCard(placedCard, cards[1]);
+            cardCount = placedCard.length;
+            sequence = SEQ_CHECK_ALL_CARD;
+          } else {
+            sequence = SEQ_PLACE_CARD;
+          }
+          break;
+        case SEQ_PLACE_CARD:
+          let nextCard = deck.popCard();
+          if (typeof nextCard !== 'undefined') {
+            placedCard.push(nextCard);
+            ++cardCount;
+          }
+          sequence = SEQ_CHECK_CARD;
+          break;
+        case SEQ_CHECK_ALL_CARD:
+          cards = checkOrder(placedCard, 0);
+          if (cards === null) {
+            sequence = SEQ_PLACE_CARD;
+          } else {
+            deleteCard(placedCard, cards[0]);
+            deleteCard(placedCard, cards[1]);
+            cardCount = placedCard.length;
+            sequence = SEQ_CHECK_ALL_CARD;
+          }
+          break;
       }
+      frameCount = 0;
     }
   }, 1000 / 60);
 }
