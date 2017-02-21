@@ -67,7 +67,6 @@
   let SEQ_CHECK_CARD = 1;
   let SEQ_CHECK_ALL_CARD = 2;
   let sequence = SEQ_PLACE_CARD;
-  let check = false;
 
   let context = canvas.getContext('2d');
   setInterval(function() {
@@ -89,6 +88,7 @@
     }
     if (++frameCount > 60) {
       let cards = null;
+      let nextCard = null;
       switch(sequence) {
         case SEQ_CHECK_CARD:
           cards = checkOrder(placedCard, placedCard.length - 1);
@@ -102,7 +102,7 @@
           }
           break;
         case SEQ_PLACE_CARD:
-          let nextCard = deck.popCard();
+          nextCard = deck.popCard();
           if (typeof nextCard !== 'undefined') {
             placedCard.push(nextCard);
             ++cardCount;
